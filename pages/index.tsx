@@ -18,7 +18,7 @@ const Home: NextPage = () => {
   return (
     <div className={styles.container}>
       <h1>Next Typescript Redux</h1>
-      {store.map(bug => (
+      {store.bugs.map(bug => (
         <div key={bug.id}>
           <h2>{bug.title}</h2>
           <p>{bug.description}</p>

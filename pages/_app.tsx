@@ -1,7 +1,7 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { Provider } from 'react-redux'
-import {createStore} from 'redux';
+import { configureStore } from "@reduxjs/toolkit";
 
 
 export const bugAdded = description => ({
@@ -29,7 +29,8 @@ export const bugResolved = id => ({
 
 let lastId = 0
 
-function reducer(state = [], action){
+function bugReducer(state = [], action){
+
   switch(action.type){
       case 'bugAdded':
           return [
@@ -48,9 +49,16 @@ function reducer(state = [], action){
       default:
           return state;
   }
+
 }
 
-const store = createStore(reducer);
+const store = configureStore(
+  {
+    reducer: {
+      bugs: bugReducer,
+    },
+  }
+  );
 
 
 function MyApp({ Component, pageProps }: AppProps) {
