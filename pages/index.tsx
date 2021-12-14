@@ -2,17 +2,18 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import { bugAdded, bugResolved, bugRemoved } from './_app'
+import { bugAdded, bugResolved, bugRemoved, fetchApi } from './_app'
 import { useDispatch, useSelector } from "react-redux";
 import React, {useEffect} from 'react';
 
-const Home: NextPage = () => {
+const Home: NextPage = ({data}) => {
   const dispatch = useDispatch();
   const store = useSelector(state => state);
 
   useEffect(() => {
     // show me the updates
     console.log(store);
+    console.log(data)
   });
 
   return (
@@ -27,9 +28,18 @@ const Home: NextPage = () => {
           <button onClick={() => dispatch(bugRemoved(bug.id))}>Remove</button>
         </div>
       ))}
+     
       <button onClick={() => dispatch(bugAdded('This is the description'))}>Add Bug</button>
+      <button onClick={() => dispatch(fetchApi('test'))}>Fetch post</button>
     </div>
   )
+}
+
+export async function getStaticProps(context) {
+  const res = await fetch(`http://localhost:3000/api/hello`)
+  const data = await res.json()
+  return { props: { data } }
+  
 }
 
 export default Home

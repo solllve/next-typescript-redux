@@ -1,8 +1,7 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { Provider } from 'react-redux'
-import { configureStore } from "@reduxjs/toolkit";
-
+import { configureStore, createSlice, nanoid, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const bugAdded = description => ({
   type: 'bugAdded',
@@ -14,7 +13,6 @@ export const bugAdded = description => ({
 export const bugRemoved = id => ({
   type: 'bugRemoved',
   payload: {
-      //if key and value are same then we can use shorthand syntax
       id
   }
 })
@@ -22,15 +20,21 @@ export const bugRemoved = id => ({
 export const bugResolved = id => ({
   type: 'bugResolved',
   payload: {
-      //if key and value are same then we can use shorthand syntax
       id
   }
 })
 
+export const fetchApi = data => ({
+  type: 'fetchApi',
+  payload: {
+      data
+  }
+})
+
+
 let lastId = 0
 
 function bugReducer(state = [], action){
-
   switch(action.type){
       case 'bugAdded':
           return [
@@ -49,16 +53,26 @@ function bugReducer(state = [], action){
       default:
           return state;
   }
+}
 
+function getApiPost(state = {}, action) {
+  if (action.type === 'fetchApi') {
+    return {
+      ...state,
+      data: action.payload.data
+    }  
+  }
+  return state
 }
 
 const store = configureStore(
   {
     reducer: {
       bugs: bugReducer,
+      posts: getApiPost
     },
   }
-  );
+);
 
 
 function MyApp({ Component, pageProps }: AppProps) {
