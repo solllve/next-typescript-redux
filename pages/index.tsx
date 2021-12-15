@@ -10,11 +10,12 @@ const Home: NextPage = ({data}) => {
   const dispatch = useDispatch();
   const store = useSelector(state => state);
 
+
   useEffect(() => {
     // show me the updates
     console.log(store);
-    console.log(data)
-  });
+    fetchApi(data)
+  },[dispatch]);
 
   return (
     <div className={styles.container}>
@@ -30,7 +31,7 @@ const Home: NextPage = ({data}) => {
       ))}
      
       <button onClick={() => dispatch(bugAdded('This is the description'))}>Add Bug</button>
-      <button onClick={() => dispatch(fetchApi('test'))}>Fetch post</button>
+      <button onClick={() => dispatch(fetchApi(data))}>Fetch post</button>
     </div>
   )
 }
@@ -39,7 +40,6 @@ export async function getStaticProps(context) {
   const res = await fetch(`http://localhost:3000/api/hello`)
   const data = await res.json()
   return { props: { data } }
-  
 }
 
 export default Home
