@@ -7,19 +7,27 @@ import { useDispatch, useSelector } from "react-redux";
 import React, {useEffect} from 'react';
 
 const Home: NextPage = ({data}) => {
+
   const dispatch = useDispatch();
   const store = useSelector(state => state);
 
 
   useEffect(() => {
     // show me the updates
-    console.log(store);
-    fetchApi(data)
+    dispatch(fetchApi(data))
+
   },[dispatch]);
+
+  const dataExample = () => {
+    const dataGetter = typeof store.posts.data !== 'undefined' ? store.posts.data.name : 'loading...'
+    return dataGetter
+  } 
 
   return (
     <div className={styles.container}>
       <h1>Next Typescript Redux</h1>
+      {dataExample()}
+
       {store.bugs.map(bug => (
         <div key={bug.id}>
           <h2>{bug.title}</h2>

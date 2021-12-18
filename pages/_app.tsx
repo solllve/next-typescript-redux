@@ -31,7 +31,6 @@ export const fetchApi = data => ({
   }
 })
 
-
 let lastId = 0
 
 function bugReducer(state = [], action){
